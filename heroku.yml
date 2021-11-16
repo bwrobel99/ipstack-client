@@ -5,16 +5,6 @@ setup:
 build:
   docker:
     api: Dockerfile
-  config:
-    POSTGRES_USER: postgres
-    POSTGRES_PASSWORD: postgres
-    POSTGRES_SERVER: postgres-db
-    POSTGRES_PORT: 5432
-    POSTGRES_DB: postgres
-    DATABASE_URL: postgresql://postgres:postgres@postgres-db:5432/postgres
-    PASSWORD_HASH_SALT: uRQQZ!oQw)qyKJtLB/sd
-    JWT_SECRET: 92e1f07ddb3caa02b2298f1fedf0a1fed5bf05ee33e4d15873354a474d43343d
-    IPSTACK_API_KEY: 5081f127b628b017b5be48f5e7f93b29
-
+    
 run:
   api: uvicorn src.app:app --reload --host 0.0.0.0 --port 8000
