@@ -1,13 +1,15 @@
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional
 
+from asyncpg.exceptions import PostgresError
 from sqlalchemy import or_, select
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.sql.expression import delete
 from src.domain.geolocation import Geolocation
+from src.helpers.exceptions import DatabaseError
 from src.repositories.base import BaseRepository
 
-from ._db_schema import geolocation, GEOLOCATION_IP_UNIQUE_CONSTRAINT
+from ._db_schema import GEOLOCATION_IP_UNIQUE_CONSTRAINT, geolocation
 
 
 @dataclass(frozen=True)
@@ -17,13 +19,19 @@ class GeolocationRepository(BaseRepository):
             or_(geolocation.c.ip == address, geolocation.c.url == address)
         )
 
-        row = await self.db.fetch_one(query)
+        try:
+            row = await self.db.fetch_one(query)
+        except PostgresError:
+            raise DatabaseError()
         return Geolocation(**row) if row else None
 
     async def get_all(self) -> List[Geolocation]:
         query = select([geolocation])
 
-        rows = await self.db.fetch_all(query)
+        try:
+            rows = await self.db.fetch_all(query)
+        except PostgresError:
+            raise DatabaseError()
         return [Geolocation(**row) for row in rows]
 
     async def create(self, input_: Dict[str, Any]) -> Geolocation:
@@ -37,7 +45,10 @@ class GeolocationRepository(BaseRepository):
             .returning(geolocation)
         )
 
-        row = await self.db.fetch_one(query)
+        try:
+            row = await self.db.fetch_one(query)
+        except PostgresError:
+            raise DatabaseError()
         return Geolocation(**row)
 
     async def delete(self, address: str) -> Optional[Geolocation]:
@@ -47,5 +58,9 @@ class GeolocationRepository(BaseRepository):
             .returning(geolocation)
         )
 
-        row = await self.db.fetch_one(query)
+        try:
+            row = await self.db.fetch_one(query)
+        except PostgresError:
+            raise DatabaseError()
+
         return Geolocation(**row) if row else None

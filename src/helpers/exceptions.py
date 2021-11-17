@@ -1,9 +1,7 @@
 from contextlib import contextmanager
-
 from dataclasses import dataclass
+
 from fastapi import HTTPException
-
-
 from pydantic import ValidationError as PydanticValidationError
 
 
@@ -13,9 +11,13 @@ class ValidationError(HTTPException):
     detail: str = "Validation Error"
 
 
-class HttpClientError(HTTPException):
-    ipstack_message: str
+@dataclass
+class DatabaseError(HTTPException):
+    status_code: int = 500
+    detail: str = "Database Error"
 
+
+class HttpClientError(HTTPException):
     def __init__(
         self,
         ipstack_message: str,
