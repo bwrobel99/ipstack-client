@@ -45,7 +45,7 @@ Returns all geolocalizations currently stored in the database.
 ### /localizations/check
 **PRIVATE ROUTE - JWT AUTH REQUIRED**. 
 
-Input: URL (*WITH SCHEMA!*), e.g. `http://example.com` 
+Input: URL (*WITH SCHEMA!*), or an IP address, e.g. `http://example.com` / `192.65.76.89` 
 
 Returns geolocalization info for provided address (URL or IP). If info for this address is present in the db, this info is returned. Otherwise, info fetched from IPStack's API is returned. If no info is found, null is returned.
 
