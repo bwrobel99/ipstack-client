@@ -11,6 +11,16 @@ Features:
 
 The application is able to store geolocation data in the database, based on IP address or URL. You can use the API to add, delete or fetch geolocation data on the base of ip address or URL. 
 
+## Run it locally
+To run it, do:
+```
+docker-compose build
+docker-compose run api initiate_db
+docker-compose run api alembic upgrade head
+docker-compose up
+```
+You should see that the app is running on port 8000.
+
 ## Docs
 Interactive docs can be found here: https://ipstack-client.herokuapp.com/docs.
 Available endpoints:
