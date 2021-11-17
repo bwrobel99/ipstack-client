@@ -19,6 +19,8 @@ docker-compose run api initiate_db
 docker-compose run api alembic upgrade head
 docker-compose up
 ```
+Please mind that you have to provide your IPStack API key by setting the `IPSTACK_API_KEY` variable. 
+
 You should see that the app is running on port 8000.
 
 ## Docs
