@@ -1,1 +1,1 @@
-api: gunicorn -k uvicorn.workers.UvicornWorker src.app:app
+web: gunicorn -k uvicorn.workers.UvicornWorker src.app:app
