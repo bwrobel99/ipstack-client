@@ -1,4 +1,4 @@
-from pydantic import BaseSettings
+from pydantic import BaseSettings, validator
 
 
 class Settings(BaseSettings):
@@ -14,3 +14,11 @@ class Settings(BaseSettings):
     JWT_SECRET: str
 
     IPSTACK_API_KEY: str
+
+    @validator("DATABASE_URL")
+    def uri_to_sqlalchemy(cls, v: str) -> str:
+        """
+        The URI should start with postgresql://, not postgres://.
+        SQLAlchemy used to accept both, but has removed support for the postgres name.
+        """
+        return v.replace("postgres://", "postgresql://")
